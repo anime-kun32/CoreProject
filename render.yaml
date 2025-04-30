@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: coreproject-backend
+    env: python
+    region: oregon
+    buildCommand: |
+      cd backend
+      uv pip install -e .
+    startCommand: |
+      cd backend
+      poe start
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: core.settings
+      - key: PYTHON_VERSION
+        value: 3.12
+      - key: PORT
+        value: 8000
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "coreproject-backend.onrender.com"
+      # Postgres connection vars
+      - fromDatabase:
+          name: core-db
+          property: database
+          key: POSTGRES_NAME
+      - fromDatabase:
+          name: core-db
+          property: user
+          key: POSTGRES_USER
+      - fromDatabase:
+          name: core-db
+          property: password
+          key: POSTGRES_PASSWORD
+      - fromDatabase:
+          name: core-db
+          property: host
+          key: POSTGRES_HOST
+      - fromDatabase:
+          name: core-db
+          property: port
+          key: POSTGRES_PORT
+
+databases:
+  - name: core-db
+    region: oregon
+    plan: free
+    databaseName: coredb
+    user: coreuser
