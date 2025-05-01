@@ -310,7 +310,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS = []
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'localhost')]
 
 if environs := os.environ.get("DJANGO_ALLOWED_HOSTS"):
     environ = environs.split(" ")
